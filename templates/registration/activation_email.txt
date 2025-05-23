@@ -1,0 +1,12 @@
+Dear {{ user }},
+
+Thank you for registering with Bullet Journal! To complete your registration and activate your account, please click the following link:
+
+http://127.0.0.1:8000/accounts/activate/{{ activation_key }}
+
+This link will expire in {{ expiration_days }} days.
+
+If you did not register for Bullet Journal, please disregard this email.
+
+Best regards,
+The Bullet Journal Team.

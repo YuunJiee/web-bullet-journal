@@ -1,0 +1,323 @@
+body, html {
+    height: 100%;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+/*sidebar----*/
+#logo-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+    cursor: default;
+}
+
+.sidebar{
+    height: 100%;
+    width: 220px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #c59d92;
+    overflow: hidden;
+}
+
+.sidebar a{
+    text-decoration: none;
+    color:#9a786e;
+    background-color: #FCF9EF;
+    display: block;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-size: 20px;
+    border-radius: 5px;
+    margin: 20px;
+    text-align: center;
+    box-shadow: 5px 5px 0px #9a786e;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.sidebar a:hover{
+    color:#FCF9EF;
+    background-color: #9a786e;
+    box-shadow: 5px 5px 0px #FCF9EF;
+}
+
+/*main----*/
+.main{
+    margin-left: 220px;
+    padding: 20px 20px;
+    height: 100%;
+    background-color: #FCF9EF;
+    background-image: radial-gradient(circle, #a2a2a2 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+/*footer----*/
+footer{
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: small;
+}
+
+
+.login-box{
+    background-color: #efdcd7;
+    width: 100%; 
+    max-width: 600px;
+    box-shadow: 5px 5px 0px #9a786e;
+    border: 0;
+}
+
+.login-box input{
+    border: 0;
+    height: 40px;
+}
+
+.mybtn{
+    color:#ffffff;
+    background-color: #9a786e;
+    box-shadow: 5px 5px 0px #FCF9EF;
+    border: 0;
+}
+
+.mybtn:hover{
+    color:#9a786e;
+    background-color: #ffffff;
+    box-shadow: 5px 5px 0px #9a786e;
+}
+
+.mybtn:focus, .mybtn:active, .mybtn:checked {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(154, 120, 110, 0.3);
+}
+
+.mylink{
+    color: #9a786e;
+}
+
+.mylink:hover{
+    color: black;
+}
+
+.mybox{
+    background-color: #efdcd7;
+    padding: 15px;
+    height: 75vh;
+    overflow: auto;
+    border-radius: 5px;
+}
+
+.mybox input{
+    border: 0;
+}
+
+.btn_img{
+    height: 20px;
+}
+
+.logListItem{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.list-group-item{
+    margin: 6px 5px;
+    border-radius: 5px;
+    border: 0;
+}
+
+.myTaskForm{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.myTaskBtn{
+    color:#ffffff;
+    background-color: #9a786e;
+    border: 0;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: none;
+}
+
+.myTaskBtn:hover{
+    color:#9a786e;
+    background-color: #ffffff;
+}
+
+.myTaskBtn:active {
+    color: #70554c;
+}
+
+input[type="radio"]:checked + .myTaskBtn {
+    color: #ffffff;
+    background-color: #70554c;
+    box-shadow: none;
+}
+
+.myTaskBtn:focus, .myTaskBtn:active, .myTaskBtn:checked {
+    outline: none;
+    box-shadow: none;
+}
+
+.myFormLabel{
+    margin-bottom: 5px;
+}
+.myTaskForm input{
+    border: 0;
+}
+
+.mySelect, .myoption, .myTextarea{
+    background-color: #ffffff !important;
+    border: 0;
+}
+
+.myWeekCard{
+    background-color: #efdcd7;
+    padding: 15px;
+    height: 32vh;
+    overflow: auto;
+    border-radius: 5px;
+}
+
+.myWeekCard2{
+    height: 38vh;
+}
+
+
+.mycolorpicker{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 30px !important;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.mycolorpicker::-webkit-color-swatch{
+    border-radius: 5px;
+    border: none;
+}
+
+.myKeyFormItem{
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.myKeyFormItem input[type='text']{
+    border: solid 1px #a2a2a2 !important;
+    width: 3px;
+}
+
+.myDateLink {
+    color: #000;
+    text-decoration: none; 
+}
+
+.myDateLink:hover {
+    text-decoration: underline;
+    color: #555; 
+}
+
+.myDateLink:active {
+    color: #333;
+}
+
+.calendar a {
+    display: block;
+    padding: 10px;
+    text-align: center;
+    background-color: #f8f9fa;
+    color: #333;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.calendar a:hover {
+    color:#fff;
+    background-color: #9a786e;
+}
+
+.calendar a.selected-day {
+    background-color: #70554c;
+    color: #fff;
+}
+
+.calendar td {
+    width: 14.28%;
+    height: 50px;
+    border: none;
+}
+
+.calendar td a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.table td, .table th, .table tr {
+    text-align: center;
+    vertical-align: middle;
+    border: none;
+}
+
+.calendar th {
+    border: none;
+    font-weight: bold;
+}
+
+
+.mybtn_save {
+    color: #fff;
+    background-color: #9a786e;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.mybtn_save:hover {
+    background-color: #6b5149;
+    color: #fff;
+}
+
+.mybtn_save:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(154, 120, 110, 0.3);
+}
+
+.mybtn_cancel {
+    color: #fff;
+    background-color: #a29f9e;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.mybtn_cancel:hover {
+    background-color: #72706f;
+    color: #fff;
+}
+
+.mybtn_cancel:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(92, 87, 85, 0.3);
+}

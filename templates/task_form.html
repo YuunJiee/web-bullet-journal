@@ -1,0 +1,69 @@
+<div class="task-form">
+    <form method="post" id="taskForm">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="content" class="myFormLabel">Log Entry</label>
+            <textarea name="content" id="content" class="form-control myTextarea" rows="3" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label class="myFormLabel">Log Type</label>
+            <div class="btn-group w-100" role="group" aria-label="Log Type">
+                <input type="radio" class="btn-check" name="log_type" id="log_type_daily" value="daily" onclick="showDateFields('daily', '{{ default_date }}')" required>
+                <label class="btn myTaskBtn" for="log_type_daily">Daily</label>
+
+                <input type="radio" class="btn-check" name="log_type" id="log_type_weekly" value="weekly" onclick="showDateFields('weekly', '{{ default_date }}')" required>
+                <label class="btn myTaskBtn" for="log_type_weekly">Weekly</label>
+
+                <input type="radio" class="btn-check" name="log_type" id="log_type_monthly" value="monthly" onclick="showDateFields('monthly', '{{ default_date }}')" required>
+                <label class="btn myTaskBtn" for="log_type_monthly">Monthly</label>
+
+                <input type="radio" class="btn-check" name="log_type" id="log_type_yearly" value="yearly" onclick="showDateFields('yearly', '{{ default_date }}')" required>
+                <label class="btn myTaskBtn" for="log_type_yearly">Yearly</label>
+            </div>
+        </div>
+        <label class="myFormLabel">Date</label>
+        <div class="mb-3 myTaskForm" id="date-daily" style="display: none;">
+            <input type="number" name="day_year" id="day_year" class="form-control" placeholder="Year" min="1900" max="2100">
+            <input type="number" name="day_month" id="day_month" class="form-control" placeholder="Month" min="1" max="12">
+            <input type="number" name="day_number" id="day_number" class="form-control" placeholder="Day" min="1" max="31">
+        </div>
+        <div class="mb-3 myTaskForm" id="date-weekly" style="display: none;">
+            <input type="number" name="week_year" id="week_year" class="form-control" placeholder="Year" min="1900" max="2100">
+            <input type="number" name="week_number" id="week_number" class="form-control" placeholder="Week" min="1" max="50">
+        </div>
+        <div class="mb-3 myTaskForm" id="date-monthly" style="display: none;">
+            <input type="number" name="month_year" id="month_year" class="form-control" placeholder="Year" min="1900" max="2100">
+            <input type="number" name="month_number" id="month_number" class="form-control" placeholder="Month" min="1" max="31">
+        </div>
+        <div class="mb-3 myTaskForm" id="date-yearly" style="display: none;">
+            <input type="number" name="yearly_year" id="yearly_year" class="form-control" placeholder="Year" min="1900" max="2100">
+        </div>
+        <div class="mb-3">
+            <label for="key_id" class="myFormLabel">Key</label>
+            <select name="key_id" id="key_id" class="form-control mySelect">
+                <option value="" class="myoption">Select Key</option>
+                {% for key in keys %}
+                <option value="{{ key.id }}" class="myoption">{{ key.symbol }} : {{ key.description }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn mybtn">Add Entry</button>
+        </div>
+    </form>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const defaultLogType = '{{ default_log_type }}';
+        const defaultDate = '{{ default_date }}';
+
+        // Set default log type and date
+        if (defaultLogType) {
+            document.getElementById('log_type_' + defaultLogType).checked = true;
+            showDateFields(defaultLogType, defaultDate);
+        }
+    });
+</script>
+
+
+

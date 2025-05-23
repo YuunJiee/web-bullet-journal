@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Key{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="col text-center">
+        <h2>Key</h2>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <form method="post">
+                {% csrf_token %}
+                <h4>Add Key</h4>
+                <div class="mybox">
+                    <div class="mb-3">
+                        <label for="symbol">Symbol</label>
+                        <input type="text" name="symbol" id="symbol" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description">Description</label>
+                        <input type="text" name="description" id="description" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="color">Color</label>
+                        <input type="color" name="color" id="color" class="form-control" required>
+                    </div>
+                    <button type="submit" name="key_action" value="add" class="btn mybtn">Add Key</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <h3>Manage Keys</h3>
+            <div class="mybox">
+                <ul class="list-group">
+                    {% for key in keys %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span style="color: {{ key.color }};">{{ key.symbol }}</span>
+                        {{ key.description }}
+                        <form method="post" class="d-inline myKeyFormItem">
+                            {% csrf_token %}
+                            <input type="hidden" name="key_id" value="{{ key.id }}">
+                            {% if key.is_default %}
+                            <input type="text" name="symbol" value="{{ key.symbol }}" class="form-control d-inline" style="width: 50px;" disabled>
+                            <input class="mycolorpicker" type="color" name="color" value="{{ key.color }}" class="form-control d-inline" style="width: 50px;" disabled>
+                            <button type="button" class="btn btn-sm" disabled>
+                                <img src="{% static 'image/default.png' %}" alt="default_img" class="btn_img">
+                            </button>
+                            {% else %}
+                            <input type="text" name="symbol" value="{{ key.symbol }}" class="form-control d-inline" style="width: 50px;">
+                            <input class="mycolorpicker" type="color" name="color" value="{{ key.color }}" class="form-control d-inline" style="width: 50px;">
+                            <button type="submit" name="key_action" value="edit" class="btn btn-sm">
+                                <img src="{% static 'image/save.png' %}" alt="save_img" class="btn_img">
+                            </button>
+                            </button>
+                            <button type="submit" name="key_action" value="delete" class="btn btn-sm">
+                                <img src="{% static 'image/delete.png' %}" alt="delete_img" class="btn_img">
+                            </button>
+                            {% endif %}
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+

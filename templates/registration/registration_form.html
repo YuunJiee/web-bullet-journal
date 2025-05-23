@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="container h-100 d-flex justify-content-center align-items-center">
+    <div class="card text-center login-box">
+        <div class="card-body">
+            <h4 class="card-title">Join Bullet Journal</h4>
+            <p class="card-text">Create an account to get started!</p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="m-4">
+                    <input type="text" class="form-control" name="username" id="username" placeholder="username" autofocus equired>
+                    {% for error in form.username.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="m-4">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="email" required>
+                    {% for error in form.email.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="m-4">
+                    <input type="password" class="form-control" name="password1" id="password1" placeholder="password" required>
+                    {% for error in form.password.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="m-4">
+                    <input type="password" class="form-control" name="password2" id="password2" placeholder="password confirmation" required>
+                    {% for error in form.password2.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="m-4">
+                    <button type="submit" class="btn mybtn">Register</button>
+                </div>
+            </form>
+            <a href="{% url 'login' %}" class="mylink">Log in</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

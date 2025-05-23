@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% load static %}
+{% block title %}Monthly Log{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row align-items-center mb-3">
+        <div class="col-1 text-center">
+            <a href="{% url 'monthly_log' year=previous_month_info.0 month=previous_month_info.1 %}" class="btn btn-outline-secondary">&lt;</a>
+        </div>
+        <div class="col text-center">
+            <h2>{{ year }}/{{ month }}</h2>
+        </div>
+        <div class="col-1 text-center">
+            <a href="{% url 'monthly_log' year=next_month_info.0 month=next_month_info.1 %}" class="btn btn-outline-secondary">&gt;</a>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>calendar</h3>
+            <div class="mybox">
+                <div class="calendar">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Mon</th>
+                                <th>Tue</th>
+                                <th>Wed</th>
+                                <th>Thu</th>
+                                <th>Fri</th>
+                                <th>Sat</th>
+                                <th>Sun</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for week in month_days|make_chunks:7 %}
+                            <tr>
+                                {% for day in week %}
+                                    <td>
+                                        {% if day > 0 %}
+                                            <a href="{% url 'monthly_log' year=year month=month %}?day={{ day }}" class="{% if selected_date and selected_date.day == day %}selected-day{% endif %}">
+                                                {{ day }}
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Daily Log - {{ selected_date|date:"Y/m/d" }}</h4>
+                    <div class="myWeekCard">
+                        <ul class="list-group">
+                            {% if selected_daily_logs %}
+                                {% for log in selected_daily_logs %}
+                                    <li class="list-group-item">
+                                        <span style="color: {{ log.color }};">{{ log.symbol }}</span>
+                                        {{ log.content }}
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                <li class="list-group-item">No logs for this day.</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Monthly Log</h4>
+                    <div class="myWeekCard myWeekCard2">
+                        <ul class="list-group">
+                            {% for log in monthly_logs %}
+                                <li class="list-group-item">
+                                    <span style="color: {{ log.color }};">{{ log.symbol }}</span>
+                                    {{ log.content }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

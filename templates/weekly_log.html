@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block title %}Weekly Log{% endblock %}
+{% block content %}
+<div class="container">
+    <!-- Navigation for previous and next weeks -->
+    <div class="row align-items-center mb-3">
+        <div class="col-1 text-center">
+            <a href="{% url 'weekly_log' year=previous_week_info.0 week=previous_week_info.1 %}" class="btn btn-outline-secondary">&lt;</a>
+        </div>
+        <div class="col text-center">
+            <h2>{{ year }} &bull; W{{ week }}</h2>
+        </div>
+        <div class="col-1 text-center">
+            <a href="{% url 'weekly_log' year=next_week_info.0 week=next_week_info.1 %}" class="btn btn-outline-secondary">&gt;</a>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <!-- Display weekly log in the first row, taking full width -->
+        <div class="col-md-3 mb-4">
+            <h4>Weekly Log</h4>
+            <div class="myWeekCard">
+                <ul class="list-group">
+                    {% for week_log in weekly_logs %}
+                        <li class="list-group-item">
+                            <span style="color: {{ week_log.key.color}};">{{ week_log.key.symbol}}</span>
+                            {{ week_log.content }}
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">No weekly logs for this week.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% for date in week_dates %}
+            <div class="col-md-3 mb-4">
+                <h4><a class="myDateLink" href="{% url 'daily_log' year=date.year month=date.month day=date.day %}">{{ date|date:"D" }} - {{ date|date:"d" }}</a></h4>
+                <div class="myWeekCard">
+                    <ul class="list-group">
+                        {% if logs_by_date %}
+                            {% for log_entry in logs_by_date|get_item:date %}
+                                <li class="list-group-item">
+                                    <span style="color: {{ log_entry.color }};">{{ log_entry.symbol }}</span>
+                                    {{ log_entry.log.content }}
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            <li class="list-group-item">No logs for this day.</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+

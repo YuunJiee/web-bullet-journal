@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Daily Log{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row align-items-center mb-3">
+        <div class="col-1 text-center">
+            <a href="{% url 'daily_log' year=previous_day.year month=previous_day.month day=previous_day.day %}" class="btn btn-outline-secondary">&lt;</a>
+        </div>
+        <div class="col text-center">
+            <h2>{{ date|date:"Y/m/d" }} &bull; W{{ date|date:"W" }}</h2>
+        </div>
+        <div class="col-1 text-center">
+            <a href="{% url 'daily_log' year=next_day.year month=next_day.month day=next_day.day %}" class="btn btn-outline-secondary">&gt;</a>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Existing Logs</h3>
+            <div class="mybox">
+                <ul class="list-group">
+                    {% for item in logs_with_details %}
+                    <li class="list-group-item">
+                        <div id="log-{{ item.log.id }}-view" class="logListItem">
+                            <div>
+                                <span style="color: {{ item.color }};">{{ item.symbol }}</span>
+                                <span>　{{ item.log.content }}</span>
+                            </div>
+                            <div>
+                            <form method="post" action="{% url 'delete_task' 'daily' item.log.id %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm float-end">
+                                    <img src="{% static 'image/delete.png' %}" alt="delete_img" class="btn_img">
+                                </button>
+                            </form>
+                            <button class="btn btn-sm me-2" onclick="editLog({{ item.log.id }}, 'daily')">
+                                <img src="{% static 'image/edit.png' %}" alt="edit_img" class="btn_img">
+                            </button>
+                            </div>
+                        </div>
+                        <div id="log-{{ item.log.id }}-edit" style="display: none;">
+                            <form method="post" action="{% url 'edit_log_inline' 'daily' item.log.id %}">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <textarea name="content" class="form-control" rows="2">{{ item.log.content }}</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <select name="key_id" class="form-control">
+                                        <option value="">Select Key</option>
+                                        {% for key in keys %}
+                                        <option value="{{ key.id }}" {% if item.log.key and key.id == item.log.key.id %}selected{% endif %}>
+                                            {{ key.symbol }} : {{ key.description }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn mybtn_save">Save</button>
+                                <button type="button" class="btn mybtn_cancel" onclick="cancelEdit({{ item.log.id }})">Cancel</button>
+                            </form>
+                        </div>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item">
+                        No logs available.
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h3>Add Entry</h3>
+            <div class="mybox">
+                {% include 'task_form.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Yearly Log{% endblock %}
+{% block content %}
+<div class="container">
+    <!-- Navigation for previous and next years -->
+    <div class="row align-items-center mb-3">
+        <div class="col-1 text-center">
+            <a href="{% url 'yearly_log' year=previous_year %}" class="btn btn-outline-secondary">&lt;</a>
+        </div>
+        <div class="col text-center">
+            <h2>{{ year }}</h2>
+        </div>
+        <div class="col-1 text-center">
+            <a href="{% url 'yearly_log' year=next_year %}" class="btn btn-outline-secondary">&gt;</a>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mybox">
+                <ul class="list-group">
+                    {% if logs_with_details %}
+                        {% for log in logs_with_details %}
+                        <li class="list-group-item">
+                            <div id="log-{{ log.id }}-view" class="logListItem">
+                                <div>
+                                    <span style="color: {{ log.color }};">{{ log.symbol }}</span>
+                                    <span>　{{ log.content }}</span>
+                                </div>
+                                <div>
+                                <form method="post" action="{% url 'delete_task' 'yearly' log.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm float-end">
+                                        <img src="{% static 'image/delete.png' %}" alt="delete_img" class="btn_img">
+                                    </button>
+                                </form>
+                                <button class="btn btn-sm me-2" onclick="editLog({{ log.id }}, 'yearly')">
+                                    <img src="{% static 'image/edit.png' %}" alt="edit_img" class="btn_img">
+                                </button>
+                                </div>
+                            </div>
+                            <div id="log-{{ log.id }}-edit" style="display: none;">
+                                <form method="post" action="{% url 'edit_log_inline' 'yearly' log.id %}">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <textarea name="content" class="form-control" rows="2">{{ log.content }}</textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <select name="key_id" class="form-control">
+                                            <option value="">Select Key</option>
+                                            {% for key in keys %}
+                                            <option value="{{ key.id }}" {% if log.key and key.id == log.key.id %}selected{% endif %}>
+                                                {{ key.symbol }} : {{ key.description }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-sm mybtn_save">Save</button>
+                                    <button type="button" class="btn btn-sm mybtn_cancel" onclick="cancelEdit({{ log.id }})">Cancel</button>
+                                </form>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    {% else %}
+                        <li class="list-group-item">No logs for this year.</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

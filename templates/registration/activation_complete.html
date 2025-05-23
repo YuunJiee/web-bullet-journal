@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Account Activation Successful{% endblock %}
+{% block content %}
+<div class="container h-100 d-flex justify-content-center align-items-center">
+    <div class="card text-center login-box">
+        <div class="card-body">
+            <h4 class="card-title">Account Activated</h4>
+            <p class="card-text">Your account has been successfully activated. You can now log in.</p>
+        </div>
+        <div class="m-4">
+            <a class="btn mybtn" href="{% url 'login' %}">Log in</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

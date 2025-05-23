@@ -1,0 +1,20 @@
+{% load static %}
+{% load custom_tags %}
+
+<div class="sidebar">
+    <a href="/" id="logo-box" disabled>
+        <img src="{% static 'image/logo.png' %}" alt="Logo" class="logo" width="40">
+        <span class="logo-text">Bullet Journal</span>
+    </a>
+    
+    <a href="{% current_date_url '/log/%Yy/%mm/%dd' %}">Daily</a>
+    <a href="{% current_date_url '/log/%Yy/%Uw' %}">Weekly</a>
+    <a href="{% current_date_url '/log/%Yy/%mm' %}">Monthly</a>
+    <a href="{% current_date_url '/log/%Yy' %}">Yearly</a>
+    <a href="/note">Notes</a>
+    <a href="/key">Key</a>
+    <a href="/setting">Setting</a>
+    {% if user.is_authenticated and request.path != '/register/' and request.path != '/login/' %}
+        <a href="/logout">Logout</a>
+    {% endif %}
+</div>

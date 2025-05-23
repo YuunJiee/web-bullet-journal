@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Log in{% endblock %}
+{% block content %}
+<div class="container h-100 d-flex justify-content-center align-items-center">
+    <div class="card text-center login-box">
+        <div class="card-body">
+            <h4 class="card-title">Welcome to Bullet Journal</h4>
+            <p class="card-text">Sign in to start using Bullet Journal</p>
+            <form method="post" action=".">
+                {% csrf_token %}
+                <div class="m-4">
+                    <input type="email" class="form-control" id="exampleFormControlInput1" name="email" placeholder="name@example.com" required>
+                </div>
+                <div class="m-4">
+                    <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password" required>
+                </div>
+                <div class="m-4">
+                    <button type="submit" class="btn mybtn">Sign In</button>
+                </div>
+            </form>
+            <a href="{% url 'password_reset' %}" class="mylink" >Forgot Password?</a> | <a href="{% url 'django_registration_register' %}" class="mylink">Sign up</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
