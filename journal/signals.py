@@ -7,12 +7,12 @@ from .models import BulletJournalKey
 def create_default_keys(sender, instance, created, **kwargs):
     if created:
         initial_keys = [
-            {"user": instance, "symbol": "•", "description": "Task", "color": "#000000", "is_default": True},
-            {"user": instance, "symbol": "x", "description": "Completed Task", "color": "#00FF00", "is_default": True},
-            {"user": instance, "symbol": ">", "description": "Migrated Task", "color": "#FFA500", "is_default": True},
-            {"user": instance, "symbol": "<", "description": "Scheduled Task", "color": "#0000FF", "is_default": True},
-            {"user": instance, "symbol": "o", "description": "Event", "color": "#FF0000", "is_default": True},
-            {"user": instance, "symbol": "-", "description": "Note", "color": "#A9A9A9", "is_default": True},
+            {"user": instance, "symbol": "dot", "description": "Task", "color": "#5D5D5D", "is_default": True},
+            {"user": instance, "symbol": "check-lg", "description": "Completed Task", "color": "#8BA888", "is_default": True},
+            {"user": instance, "symbol": "chevron-right", "description": "Migrated Task", "color": "#D69A70", "is_default": True},
+            {"user": instance, "symbol": "chevron-left", "description": "Scheduled Task", "color": "#829399", "is_default": True},
+            {"user": instance, "symbol": "circle", "description": "Event", "color": "#C27F7C", "is_default": True},
+            {"user": instance, "symbol": "dash-lg", "description": "Note", "color": "#A39A92", "is_default": True},
         ]
         for key in initial_keys:
             BulletJournalKey.objects.create(**key)

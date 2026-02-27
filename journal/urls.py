@@ -1,12 +1,18 @@
 from django.urls import path, include
 from . import views
+from .form import CustomPasswordResetForm, CustomRegistrationForm
 from django.contrib.auth import views as auth_views
+from django_registration.backends.activation.views import RegistrationView
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('login/', views.login, name='login'),
+    path('accounts/register/', RegistrationView.as_view(form_class=CustomRegistrationForm), name='django_registration_register'),
     path('accounts/', include('django_registration.backends.activation.urls')),
-    path('password_reset/', auth_views.PasswordResetView.as_view(template_name='password_reset_form.html'), name='password_reset'),
+    path('password_reset/', auth_views.PasswordResetView.as_view(
+        template_name='password_reset_form.html',
+        form_class=CustomPasswordResetForm
+    ), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='password_reset_done.html'), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'), name='password_reset_complete'),
@@ -18,6 +24,7 @@ urlpatterns = [
     path('log/migrate/<str:log_type>/<int:log_id>/', views.migrate_task, name='migrate_task'),
     path('log/edit/inline/<str:log_type>/<int:log_id>/', views.edit_log_inline, name='edit_log_inline'),
     path('log/delete/<str:log_type>/<int:log_id>/', views.delete_task, name='delete_task'),
+    path('log/toggle/<str:log_type>/<int:log_id>/', views.toggle_log_status, name='toggle_log_status'),
     path('key/', views.key, name='key'),
     path('note/', views.note, name='note'),
     path('setting/', views.setting, name='setting'),

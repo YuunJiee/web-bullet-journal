@@ -1,21 +1,77 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="{% static 'css/style.css' %}?v=4" rel="stylesheet">
     <link rel="icon" href="{% static 'image/logo.png' %}" type="image/x-icon" />
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}{% endblock %} | Jotly</title>
 </head>
+
 <body>
     {% include 'sidebar.html' %}
-    <div class="main">
+    <div class="main fade-in">
         {% block content %}{% endblock %}
+        {% include 'footer.html' %}
     </div>
-    {% include 'footer.html' %}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+
+    <!-- Global Add Entry Modal -->
+    <div class="modal fade" id="addEntryModal" tabindex="-1" aria-labelledby="addEntryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: #efdcd7; border: 2px solid #9a786e; border-radius: 10px;">
+                <div class="modal-header" style="border-bottom: 2px dashed #9a786e;">
+                    <h5 class="modal-title" id="addEntryModalLabel" style="color: #9a786e; font-weight: bold;">Add Entry</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body mybox p-4 m-0" style="background-color: transparent; border: none; height: auto;">
+                    {% include 'task_form.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Button Modal Trigger -->
+    <button type="button" class="help-btn" data-bs-toggle="modal" data-bs-target="#helpModal" title="Help">
+        ?
+    </button>
+
+    <!-- Global Help Modal -->
+    <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: #f7f1ec; border: 2px solid #9a786e; border-radius: 10px;">
+                <div class="modal-header" style="border-bottom: 2px dashed #9a786e;">
+                    <h5 class="modal-title" id="helpModalLabel" style="color: #9a786e; font-weight: bold;">Jotly Usage Tips</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4" style="color: #70554c; font-size: 1.1rem; line-height: 1.6;">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-3">
+                            <i class="bi bi-check-circle me-2"></i> <strong>Quick Toggle:</strong> Click on the icon of a Task (•) or Completed Task (x) to instantly change its status.
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-cursor me-2"></i> <strong>Hover Actions:</strong> Hover your mouse over any log entry (or tap on mobile) to reveal hidden actions like Edit (pencil), Migrate (&gt;), or Schedule (&lt;).
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-lock me-2"></i> <strong>Immutability:</strong> Tasks that are already Migrated, Scheduled, or Completed cannot be edited further to preserve history.
+                        </li>
+                        <li>
+                            <i class="bi bi-plus-square me-2"></i> <strong>Global Entry:</strong> Use the `+ Add Entry` button in the sidebar to add a new task or note to any day, from any page.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+        crossorigin="anonymous"></script>
     <script src="{% static 'js/custom.js' %}"></script>
 </body>
+
 </html>

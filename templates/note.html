@@ -10,22 +10,50 @@
     <div class="mybox">
         <ul class="list-group">
             {% if logs_with_details %}
-                {% for entry in logs_with_details %}
-                    <li class="list-group-item">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <span style="color: {{ entry.color }};">{{ entry.symbol }}</span>
-                                {{ entry.log.content }}
-                                <small class="text-muted">({{ entry.log.created_at|date:"Y-m-d" }})</small>
-                            </div>
+            {% for item in logs_with_details %}
+            <li class="list-group-item">
+                <div id="log-{{ item.log.id }}-view" class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span style="color: {{ item.color }}; margin-right: 8px; font-size: 1.1rem;">
+                            <i class="bi bi-{{ item.symbol }}"></i>
+                        </span>
+                        {{ item.log.content }}
+                        <small class="text-muted">({{ item.log.created_at|date:"Y-m-d" }})</small>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm me-2 float-end" onclick="editLog({{ item.log.id }}, 'note')">
+                            <img src="{% static 'image/edit.png' %}" alt="edit_img" class="btn_img">
+                        </button>
+                    </div>
+                </div>
+                <div id="log-{{ item.log.id }}-edit" style="display: none;">
+                    <form method="post" action="{% url 'edit_log_inline' 'note' item.log.id %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <textarea name="content" class="form-control" rows="2">{{ item.log.content }}</textarea>
                         </div>
-                    </li>
-                {% endfor %}
+                        <div class="mb-3">
+                            <select name="key_id" class="form-control" style="display:none;">
+                                <option value="{{ item.log.key.id }}" selected>{{ item.symbol }}</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn mybtn_save">Save</button>
+                        <button type="button" class="btn mybtn_cancel"
+                            onclick="cancelEdit({{ item.log.id }})">Cancel</button>
+                    </form>
+                    <form method="post" action="{% url 'delete_task' 'note' item.log.id %}" class="d-inline float-end" style="margin-top: -38px;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm" title="Delete">
+                            <img src="{% static 'image/delete.png' %}" alt="delete_img" class="btn_img">
+                        </button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
             {% else %}
-                <li class="list-group-item">No notes found.</li>
+            <li class="list-group-item">No notes found.</li>
             {% endif %}
         </ul>
     </div>
 </div>
 {% endblock %}
-

@@ -43,7 +43,7 @@
             <select name="key_id" id="key_id" class="form-control mySelect">
                 <option value="" class="myoption">Select Key</option>
                 {% for key in keys %}
-                <option value="{{ key.id }}" class="myoption">{{ key.symbol }} : {{ key.description }}</option>
+                <option value="{{ key.id }}" class="myoption">&#x{% if key.symbol == 'dot' %}2022{% elif key.symbol == 'check-lg' %}2713{% elif key.symbol == 'circle' %}25CB{% elif key.symbol == 'dash-lg' %}2014{% elif key.symbol == 'chevron-right' %}003E{% elif key.symbol == 'chevron-left' %}003C{% else %}2217{% endif %}; {{ key.description }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -53,14 +53,42 @@
     </form>
 </div>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const defaultLogType = '{{ default_log_type }}';
+    document.addEventListener("DOMContentLoaded", function () {
+        let defaultLogType = '{{ default_log_type }}';
         const defaultDate = '{{ default_date }}';
+
+        // Default to daily if no log type is provided
+        if (!defaultLogType) {
+            defaultLogType = 'daily';
+        }
 
         // Set default log type and date
         if (defaultLogType) {
-            document.getElementById('log_type_' + defaultLogType).checked = true;
-            showDateFields(defaultLogType, defaultDate);
+            const typeRadio = document.getElementById('log_type_' + defaultLogType);
+            if (typeRadio) {
+                typeRadio.checked = true;
+                // We need to make sure the showDateFields function exists 
+                // in the global scope (it's defined in custom.js)
+                if (typeof showDateFields === 'function') {
+                    showDateFields(defaultLogType, defaultDate);
+                }
+            }
+        }
+
+        // Set default key to 'Task'
+        const keySelect = document.getElementById('key_id');
+        if (keySelect && !keySelect.value) {
+            for (let i = 0; i < keySelect.options.length; i++) {
+                // Check if the option text contains 'Task' and not 'Completed Task' etc.
+                if (keySelect.options[i].text.includes('Task') && 
+                    !keySelect.options[i].text.includes('Completed') &&
+                    !keySelect.options[i].text.includes('Migrated') &&
+                    !keySelect.options[i].text.includes('Scheduled')) {
+                    
+                    keySelect.selectedIndex = i;
+                    break;
+                }
+            }
         }
     });
 </script>

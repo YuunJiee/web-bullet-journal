@@ -11,11 +11,25 @@
         <div class="col-md-6">
             <form method="post">
                 {% csrf_token %}
-                <h4>Add Key</h4>
+                <h3>Add Key</h3>
                 <div class="mybox">
                     <div class="mb-3">
-                        <label for="symbol">Symbol</label>
-                        <input type="text" name="symbol" id="symbol" class="form-control" required>
+                        <label for="symbol">Icon</label>
+                        <select name="symbol" id="symbol" class="form-select" required>
+                            <option value="star-fill">★ Star (Important)</option>
+                            <option value="exclamation-circle-fill">! Warning</option>
+                            <option value="question-circle">? Question</option>
+                            <option value="heart-fill">♥ Love</option>
+                            <option value="lightbulb">💡 Idea</option>
+                            <option value="clock">🕒 Time</option>
+                            <option value="calendar-event">📅 Calendar</option>
+                            <option value="envelope">✉ Mail</option>
+                            <option value="flag-fill">🚩 Flag</option>
+                            <option value="tag-fill">🏷️ Tag</option>
+                            <option value="camera-fill">📷 Photo</option>
+                            <option value="music-note">🎵 Music</option>
+                            <option value="cart-fill">� Shopping</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="description">Description</label>
@@ -35,23 +49,37 @@
                 <ul class="list-group">
                     {% for key in keys %}
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span style="color: {{ key.color }};">{{ key.symbol }}</span>
-                        {{ key.description }}
+                        <div class="d-flex align-items-center">
+                            <span style="color: {{ key.color }}; display: inline-flex; align-items: center; margin-right: 12px; min-width: 25px; justify-content: center; font-size: 1.2rem;">
+                                <i class="bi bi-{{ key.symbol }}"></i>
+                            </span>
+                            <span class="fw-bold">{{ key.description }}</span>
+                        </div>
                         <form method="post" class="d-inline myKeyFormItem">
                             {% csrf_token %}
                             <input type="hidden" name="key_id" value="{{ key.id }}">
                             {% if key.is_default %}
-                            <input type="text" name="symbol" value="{{ key.symbol }}" class="form-control d-inline" style="width: 50px;" disabled>
-                            <input class="mycolorpicker" type="color" name="color" value="{{ key.color }}" class="form-control d-inline" style="width: 50px;" disabled>
-                            <button type="button" class="btn btn-sm" disabled>
-                                <img src="{% static 'image/default.png' %}" alt="default_img" class="btn_img">
-                            </button>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="color" name="color" value="{{ key.color }}"
+                                    class="mycolorpicker form-control d-inline" style="width: 35px; height: 35px; border: none; padding: 0; background: none;" disabled>
+                                <span class="badge bg-light text-secondary border">Default</span>
+                            </div>
                             {% else %}
-                            <input type="text" name="symbol" value="{{ key.symbol }}" class="form-control d-inline" style="width: 50px;">
-                            <input class="mycolorpicker" type="color" name="color" value="{{ key.color }}" class="form-control d-inline" style="width: 50px;">
+                            <select name="symbol" class="form-select d-inline" style="width: 100px;">
+                                <option value="dot" {% if key.symbol == 'dot' %}selected{% endif %}>Dot</option>
+                                <option value="check-lg" {% if key.symbol == 'check-lg' %}selected{% endif %}>Check</option>
+                                <option value="circle" {% if key.symbol == 'circle' %}selected{% endif %}>Circle</option>
+                                <option value="dash-lg" {% if key.symbol == 'dash-lg' %}selected{% endif %}>Dash</option>
+                                <option value="chevron-right" {% if key.symbol == 'chevron-right' %}selected{% endif %}>Migrate</option>
+                                <option value="chevron-left" {% if key.symbol == 'chevron-left' %}selected{% endif %}>Schedule</option>
+                                <option value="star-fill" {% if key.symbol == 'star-fill' %}selected{% endif %}>Star</option>
+                                <option value="exclamation-circle-fill" {% if key.symbol == 'exclamation-circle-fill' %}selected{% endif %}>Warning</option>
+                                <option value="heart-fill" {% if key.symbol == 'heart-fill' %}selected{% endif %}>Heart</option>
+                            </select>
+                            <input type="color" name="color" value="{{ key.color }}"
+                                class="mycolorpicker form-control d-inline" style="width: 50px;">
                             <button type="submit" name="key_action" value="edit" class="btn btn-sm">
                                 <img src="{% static 'image/save.png' %}" alt="save_img" class="btn_img">
-                            </button>
                             </button>
                             <button type="submit" name="key_action" value="delete" class="btn btn-sm">
                                 <img src="{% static 'image/delete.png' %}" alt="delete_img" class="btn_img">
@@ -66,6 +94,3 @@
     </div>
 </div>
 {% endblock %}
-
-
-

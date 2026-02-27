@@ -7,6 +7,8 @@ venv/
 env/
 .vscode/
 .env
+.env.local
+
 
 *.sqlite3
 *.db
@@ -22,6 +24,11 @@ env/
 
 staticfiles/
 media/
+
+# Conda environment
+env/
+venv/
+.conda/
 
 **/migrations/*.pyc
 **/migrations/__pycache__/

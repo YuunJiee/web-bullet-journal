@@ -1,18 +1,20 @@
-body, html {
-    height: 100%;
-    font-family: 'Comic Sans MS', cursive, sans-serif;
+body,
+html {
+    min-height: 100%;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    scrollbar-gutter: stable;
 }
 
 /*sidebar----*/
 #logo-box {
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
     justify-content: center;
     cursor: default;
 }
 
-.sidebar{
+.sidebar {
     height: 100%;
     width: 220px;
     position: fixed;
@@ -23,12 +25,12 @@ body, html {
     overflow: hidden;
 }
 
-.sidebar a{
+.sidebar a {
     text-decoration: none;
-    color:#9a786e;
+    color: #9a786e;
     background-color: #FCF9EF;
     display: block;
-    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
     font-size: 20px;
     border-radius: 5px;
     margin: 20px;
@@ -37,74 +39,92 @@ body, html {
     border: none;
     padding: 10px;
     cursor: pointer;
+    letter-spacing: 0.05em;
 }
 
-.sidebar a:hover{
-    color:#FCF9EF;
+.sidebar a:hover {
+    color: #FCF9EF;
     background-color: #9a786e;
     box-shadow: 5px 5px 0px #FCF9EF;
 }
 
+.sidebar a:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #FCF9EF;
+}
+
 /*main----*/
-.main{
+.main {
     margin-left: 220px;
     padding: 20px 20px;
-    height: 100%;
+    min-height: 100vh;
     background-color: #FCF9EF;
-    background-image: radial-gradient(circle, #a2a2a2 1px, transparent 1px);
+    background-image: radial-gradient(circle, #e0e0e0 1px, transparent 1px);
     background-size: 20px 20px;
 }
 
 /*footer----*/
-footer{
-    font-family: 'Comic Sans MS', cursive, sans-serif;
-    position: absolute;
+footer {
+    font-family: 'Patrick Hand', cursive, sans-serif;
+    position: fixed;
     bottom: 10px;
-    right: 10px;
+    left: 220px;
+    right: 0;
+    text-align: center;
     font-size: small;
+    color: #9a786e;
+    z-index: 100;
+    pointer-events: none;
 }
 
 
-.login-box{
+.login-box {
     background-color: #efdcd7;
-    width: 100%; 
+    width: 100%;
     max-width: 600px;
     box-shadow: 5px 5px 0px #9a786e;
     border: 0;
 }
 
-.login-box input{
+.login-box input {
     border: 0;
     height: 40px;
 }
 
-.mybtn{
-    color:#ffffff;
+.mybtn {
+    color: #ffffff;
     background-color: #9a786e;
     box-shadow: 5px 5px 0px #FCF9EF;
     border: 0;
 }
 
-.mybtn:hover{
-    color:#9a786e;
+.mybtn:hover {
+    color: #9a786e;
     background-color: #ffffff;
     box-shadow: 5px 5px 0px #9a786e;
 }
 
-.mybtn:focus, .mybtn:active, .mybtn:checked {
+.mybtn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #9a786e;
+}
+
+.mybtn:focus,
+.mybtn:active,
+.mybtn:checked {
     outline: none;
     box-shadow: 0 0 0 3px rgba(154, 120, 110, 0.3);
 }
 
-.mylink{
+.mylink {
     color: #9a786e;
 }
 
-.mylink:hover{
+.mylink:hover {
     color: black;
 }
 
-.mybox{
+.mybox {
     background-color: #efdcd7;
     padding: 15px;
     height: 75vh;
@@ -112,43 +132,77 @@ footer{
     border-radius: 5px;
 }
 
-.mybox input{
+.mybox input {
     border: 0;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 0.375rem 0.75rem;
 }
 
-.btn_img{
+/* Captcha Styling */
+.captcha-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    padding: 0;
+}
+
+.captcha-container img {
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+#id_captcha_1 {
+    display: block;
+    width: 60%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da !important;
+    appearance: none;
+    border-radius: 5px !important;
+    text-align: center;
+}
+
+.btn_img {
     height: 20px;
 }
 
-.logListItem{
+.logListItem {
     display: flex;
     align-items: center;
     width: 100%;
     justify-content: space-between;
 }
 
-.list-group-item{
+.list-group-item {
     margin: 6px 5px;
     border-radius: 5px;
     border: 0;
 }
 
-.myTaskForm{
+.myTaskForm {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.myTaskBtn{
-    color:#ffffff;
+.myTaskBtn {
+    color: #ffffff;
     background-color: #9a786e;
     border: 0;
     transition: background-color 0.3s, color 0.3s;
     box-shadow: none;
 }
 
-.myTaskBtn:hover{
-    color:#9a786e;
+.myTaskBtn:hover {
+    color: #9a786e;
     background-color: #ffffff;
 }
 
@@ -156,78 +210,87 @@ footer{
     color: #70554c;
 }
 
-input[type="radio"]:checked + .myTaskBtn {
+input[type="radio"]:checked+.myTaskBtn {
     color: #ffffff;
     background-color: #70554c;
     box-shadow: none;
 }
 
-.myTaskBtn:focus, .myTaskBtn:active, .myTaskBtn:checked {
+.myTaskBtn:focus,
+.myTaskBtn:active,
+.myTaskBtn:checked {
     outline: none;
     box-shadow: none;
 }
 
-.myFormLabel{
+.myFormLabel {
     margin-bottom: 5px;
 }
-.myTaskForm input{
+
+.myTaskForm input {
     border: 0;
 }
 
-.mySelect, .myoption, .myTextarea{
+.mySelect,
+.myoption,
+.myTextarea {
     background-color: #ffffff !important;
     border: 0;
 }
 
-.myWeekCard{
+.myWeekCard {
     background-color: #efdcd7;
     padding: 15px;
-    height: 32vh;
-    overflow: auto;
+    min-height: 250px;
+    max-height: 50vh;
+    overflow-y: auto;
     border-radius: 5px;
 }
 
-.myWeekCard2{
+.myWeekCard2 {
     height: 38vh;
 }
 
 
-.mycolorpicker{
+.mycolorpicker {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     width: 30px !important;
+    min-width: 30px;
     height: 30px;
     border: none;
     cursor: pointer;
     background-color: transparent;
+    padding: 0;
+    margin: 0 5px;
 }
 
-.mycolorpicker::-webkit-color-swatch{
+.mycolorpicker::-webkit-color-swatch {
     border-radius: 5px;
     border: none;
 }
 
-.myKeyFormItem{
+.myKeyFormItem {
     display: flex !important;
     align-items: center;
     justify-content: center;
     gap: 5px;
 }
 
-.myKeyFormItem input[type='text']{
+.myKeyFormItem input[type='text'] {
     border: solid 1px #a2a2a2 !important;
     width: 3px;
 }
 
 .myDateLink {
     color: #000;
-    text-decoration: none; 
+    text-decoration: none;
 }
 
 .myDateLink:hover {
     text-decoration: underline;
-    color: #555; 
+    color: #555;
 }
 
 .myDateLink:active {
@@ -246,7 +309,7 @@ input[type="radio"]:checked + .myTaskBtn {
 }
 
 .calendar a:hover {
-    color:#fff;
+    color: #fff;
     background-color: #9a786e;
 }
 
@@ -270,7 +333,9 @@ input[type="radio"]:checked + .myTaskBtn {
     font-weight: bold;
 }
 
-.table td, .table th, .table tr {
+.table td,
+.table th,
+.table tr {
     text-align: center;
     vertical-align: middle;
     border: none;
@@ -320,4 +385,158 @@ input[type="radio"]:checked + .myTaskBtn {
 .mybtn_cancel:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(92, 87, 85, 0.3);
+}
+
+/* Log Actions Hover Reveal */
+@media (min-width: 768px) {
+    .log-actions {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    }
+
+    .logListItem:hover .log-actions {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+/* On mobile (no hover), always show them or slightly dimmed */
+@media (max-width: 767px) {
+    .log-actions {
+        opacity: 0.6;
+    }
+}
+
+/* Floating Help Button */
+.help-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #9a786e;
+    color: #FCF9EF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1050;
+    transition: transform 0.2s, background-color 0.2s;
+    border: none;
+}
+
+.help-btn:hover {
+    transform: scale(1.1);
+    background-color: #70554c;
+    color: #FCF9EF;
+}
+
+/* Weekly Log Fine-tuning */
+.myWeekCard .list-group-item {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+}
+
+.myWeekCard .bi {
+    font-size: 1rem;
+}
+
+/* Footer Styling */
+footer {
+    padding: 30px 20px;
+    text-align: center;
+    color: #9a786e;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    font-size: 0.9rem;
+    margin-top: 40px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Smooth Transitions */
+.sidebar a,
+.btn,
+.mybtn_save,
+.mybtn_cancel,
+.logListItem {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Empty State Styling */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #9a786e;
+    opacity: 0.8;
+}
+
+.empty-state img {
+    max-width: 180px;
+    margin-bottom: 20px;
+    filter: sepia(0.2);
+}
+
+.empty-state p {
+    font-size: 1.1rem;
+    font-style: italic;
+}
+
+/* Mobile Refinements */
+@media (max-width: 767px) {
+    .myWeekCard {
+        min-height: auto;
+        margin-bottom: 30px;
+    }
+
+    .main {
+        padding: 10px;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 10px 0;
+    }
+
+    .sidebar a {
+        margin: 5px;
+        font-size: 16px;
+        padding: 8px 15px;
+        display: inline-block;
+    }
+
+    #logo-box {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .main {
+        margin-left: 0;
+    }
+
+    footer {
+        margin-left: 0;
+    }
 }

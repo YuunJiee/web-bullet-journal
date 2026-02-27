@@ -4,17 +4,23 @@
 <div class="sidebar">
     <a href="/" id="logo-box" disabled>
         <img src="{% static 'image/logo.png' %}" alt="Logo" class="logo" width="40">
-        <span class="logo-text">Bullet Journal</span>
+        <span class="logo-text">Jotly</span>
     </a>
-    
+
     <a href="{% current_date_url '/log/%Yy/%mm/%dd' %}">Daily</a>
-    <a href="{% current_date_url '/log/%Yy/%Uw' %}">Weekly</a>
+    <a href="{% current_date_url '/log/%Gy/%Vw' %}">Weekly</a>
     <a href="{% current_date_url '/log/%Yy/%mm' %}">Monthly</a>
     <a href="{% current_date_url '/log/%Yy' %}">Yearly</a>
     <a href="/note">Notes</a>
+    
+    <a href="#" data-bs-toggle="modal" data-bs-target="#addEntryModal" class="mt-3 text-primary fw-bold">
+        <i class="bi bi-plus-circle-fill me-2"></i>Add Entry
+    </a>
+
+    <hr style="border-color: rgba(255,255,255,0.2); width: 80%; margin: 15px auto;">
     <a href="/key">Key</a>
     <a href="/setting">Setting</a>
     {% if user.is_authenticated and request.path != '/register/' and request.path != '/login/' %}
-        <a href="/logout">Logout</a>
+    <a href="/logout" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
     {% endif %}
 </div>

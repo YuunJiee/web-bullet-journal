@@ -21,49 +21,78 @@
             <div class="mybox">
                 <ul class="list-group">
                     {% if logs_with_details %}
-                        {% for log in logs_with_details %}
-                        <li class="list-group-item">
-                            <div id="log-{{ log.id }}-view" class="logListItem">
-                                <div>
-                                    <span style="color: {{ log.color }};">{{ log.symbol }}</span>
-                                    <span>　{{ log.content }}</span>
-                                </div>
-                                <div>
-                                <form method="post" action="{% url 'delete_task' 'yearly' log.id %}" class="d-inline">
+                    {% for log in logs_with_details %}
+                    <li class="list-group-item">
+                        <div id="log-{{ log.log.id }}-view" class="logListItem">
+                            <div>
+                                {% if log.log.key.description == 'Task' or log.log.key.description == 'Completed Task' %}
+                                <form method="post" action="{% url 'toggle_log_status' 'yearly' log.log.id %}" class="d-inline m-0">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn btn-sm float-end">
-                                        <img src="{% static 'image/delete.png' %}" alt="delete_img" class="btn_img">
+                                    <button type="submit" class="btn p-0 m-0 border-0 bg-transparent" style="color: {{ log.color }}; cursor: pointer; font-size: 1.1rem;">
+                                        <i class="bi bi-{{ log.symbol }}"></i>
                                     </button>
                                 </form>
-                                <button class="btn btn-sm me-2" onclick="editLog({{ log.id }}, 'yearly')">
+                                {% else %}
+                                <span style="color: {{ log.color }}; font-size: 1.1rem;">
+                                    <i class="bi bi-{{ log.symbol }}"></i>
+                                </span>
+                                {% endif %}
+                                <span>　<span {% if log.log.key.description == 'Completed Task' or log.log.key.description == 'Migrated Task' or log.log.key.description == 'Scheduled Task' %}style="text-decoration: line-through; color: #a2a2a2;"{% endif %}>{{ log.log.content }}</span></span>
+                            </div>
+                            <div class="log-actions d-flex align-items-center gap-3">
+                                {% if log.log.key and log.log.key.description != 'Notes' and log.log.key.description != 'Events' and log.log.key.description != 'Completed Task' and log.log.key.description != 'Migrated Task' and log.log.key.description != 'Scheduled Task' %}
+                                <a href="{% url 'schedule_task' 'yearly' log.log.id %}" class="btn btn-sm p-0 m-0 text-decoration-none" title="Schedule Task">
+                                    <i class="bi bi-chevron-left" style="font-weight: bold; color: #829399;"></i>
+                                </a>
+                                <form method="post" action="{% url 'migrate_task' 'yearly' log.log.id %}" class="d-inline m-0">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm p-0" title="Migrate Task">
+                                        <i class="bi bi-chevron-right" style="font-weight: bold; color: #D69A70;"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+                                {% if log.log.key and log.log.key.description != 'Completed Task' and log.log.key.description != 'Migrated Task' and log.log.key.description != 'Scheduled Task' %}
+                                <button class="btn btn-sm p-0" onclick="editLog({{ log.log.id }}, 'yearly')" title="Edit">
                                     <img src="{% static 'image/edit.png' %}" alt="edit_img" class="btn_img">
                                 </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div id="log-{{ log.log.id }}-edit" style="display: none;">
+                            <form method="post" action="{% url 'edit_log_inline' 'yearly' log.log.id %}">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <textarea name="content" class="form-control" rows="2">{{ log.log.content }}</textarea>
                                 </div>
-                            </div>
-                            <div id="log-{{ log.id }}-edit" style="display: none;">
-                                <form method="post" action="{% url 'edit_log_inline' 'yearly' log.id %}">
-                                    {% csrf_token %}
-                                    <div class="mb-3">
-                                        <textarea name="content" class="form-control" rows="2">{{ log.content }}</textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <select name="key_id" class="form-control">
-                                            <option value="">Select Key</option>
-                                            {% for key in keys %}
-                                            <option value="{{ key.id }}" {% if log.key and key.id == log.key.id %}selected{% endif %}>
-                                                {{ key.symbol }} : {{ key.description }}
-                                            </option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="btn btn-sm mybtn_save">Save</button>
-                                    <button type="button" class="btn btn-sm mybtn_cancel" onclick="cancelEdit({{ log.id }})">Cancel</button>
-                                </form>
-                            </div>
-                        </li>
-                        {% endfor %}
+                                <div class="mb-3">
+                                    <select name="key_id" class="form-control">
+                                        <option value="">Select Key</option>
+                                        {% for key in keys %}
+                                        <option value="{{ key.id }}" {% if log.log.key and key.id == log.log.key.id %}selected{% endif %}>
+                                            {{ key.symbol }} : {{ key.description }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-sm mybtn_save">Save</button>
+                                <button type="button" class="btn btn-sm mybtn_cancel"
+                                    onclick="cancelEdit({{ log.log.id }})">Cancel</button>
+                            </form>
+                            <form method="post" action="{% url 'delete_task' 'yearly' log.log.id %}" class="d-inline float-end" style="margin-top: -31px;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm" title="Delete">
+                                    <img src="{% static 'image/delete.png' %}" alt="delete_img" class="btn_img">
+                                </button>
+                            </form>
+                        </div>
+                    </li>
+                    {% endfor %}
                     {% else %}
-                        <li class="list-group-item">No logs for this year.</li>
+                    <li class="list-group-item border-0 bg-transparent">
+                        <div class="empty-state">
+                            <p>"A new year has begun. What are your goals?"</p>
+                        </div>
+                    </li>
                     {% endif %}
                 </ul>
             </div>
@@ -71,4 +100,3 @@
     </div>
 </div>
 {% endblock %}
-

@@ -4,22 +4,66 @@
 <div class="container h-100 d-flex justify-content-center align-items-center">
     <div class="card text-center login-box">
         <div class="card-body">
-            <h4 class="card-title">Welcome to Bullet Journal</h4>
-            <p class="card-text">Sign in to start using Bullet Journal</p>
+            <h4 class="card-title">Welcome to Jotly</h4>
+            <p class="card-text">Sign in to start using Jotly</p>
             <form method="post" action=".">
                 {% csrf_token %}
                 <div class="m-4">
-                    <input type="email" class="form-control" id="exampleFormControlInput1" name="email" placeholder="name@example.com" required>
+                    <input type="email" class="form-control" id="exampleFormControlInput1" name="email"
+                        placeholder="name@example.com" required value="{{ login_form.email.value|default_if_none:'' }}">
+                    {% for error in login_form.email.errors %}
+                    <div class="text-danger text-start ms-1 mt-1"><small>{{ error }}</small></div>
+                    {% endfor %}
                 </div>
                 <div class="m-4">
-                    <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password" required>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="inputPassword" name="password"
+                            placeholder="Password" required>
+                        <button class="btn btn-outline-secondary" type="button"
+                            onclick="togglePassword('inputPassword', 'eyeIconLogin')">
+                            <i id="eyeIconLogin" class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                    {% for error in login_form.password.errors %}
+                    <div class="text-danger text-start ms-1 mt-1"><small>{{ error }}</small></div>
+                    {% endfor %}
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div
+                        class="text-{% if message.tags == 'error' %}danger{% else %}success{% endif %} text-start ms-1 mt-1">
+                        <small>{{ message }}</small>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="m-4 captcha-container">
+                    {{ login_form.captcha }}
+                    {% for error in login_form.captcha.errors %}
+                    <div class="text-danger ms-1 mt-1"><small>{{ error }}</small></div>
+                    {% endfor %}
                 </div>
                 <div class="m-4">
                     <button type="submit" class="btn mybtn">Sign In</button>
                 </div>
             </form>
-            <a href="{% url 'password_reset' %}" class="mylink" >Forgot Password?</a> | <a href="{% url 'django_registration_register' %}" class="mylink">Sign up</a>
+            <a href="{% url 'password_reset' %}" class="mylink">Forgot Password?</a> | <a
+                href="{% url 'django_registration_register' %}" class="mylink">Sign up</a>
         </div>
     </div>
 </div>
+<script>
+    function togglePassword(inputId, iconId) {
+        var passwordInput = document.getElementById(inputId);
+        var icon = document.getElementById(iconId);
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
+        } else {
+            passwordInput.type = "password";
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
+        }
+    }
+</script>
 {% endblock %}
