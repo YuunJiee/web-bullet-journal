@@ -37,3 +37,8 @@ venv/
 Thumbs.db
 ehthumbs.db
 desktop.ini
+
+# Production Configs
+deployment/jotly.service
+deployment/jotly_nginx.conf
+dev.sh

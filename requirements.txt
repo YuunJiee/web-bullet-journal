@@ -1,4 +1,7 @@
 Django==5.0.6
 django-crispy-forms>=2.1
+crispy-bootstrap5>=2024.2
 django-registration>=3.4
 python-decouple>=3.8
+django-simple-captcha>=0.6.0
+gunicorn>=22.0.0
