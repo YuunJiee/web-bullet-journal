@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Register{% endblock %}
 {% block content %}
-<div class="container h-100 d-flex justify-content-center align-items-center">
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
     <div class="card text-center login-box">
         <div class="card-body">
             <h4 class="card-title">Join Jotly</h4>
@@ -16,13 +16,6 @@
                 </div>
                 {% endif %}
                 <div class="m-4">
-                    <input type="text" class="form-control" name="username" id="username" placeholder="username"
-                        autofocus required value="{{ form.username.value|default_if_none:'' }}">
-                    {% for error in form.username.errors %}
-                    <div class="text-danger text-start ms-1 mt-1"><small>{{ error }}</small></div>
-                    {% endfor %}
-                </div>
-                <div class="m-4">
                     <input type="email" class="form-control" name="email" id="email" placeholder="email" required
                         value="{{ form.email.value|default_if_none:'' }}">
                     {% for error in form.email.errors %}
@@ -32,7 +25,7 @@
                 <div class="m-4">
                     <div class="input-group">
                         <input type="password" class="form-control" name="password1" id="password1"
-                            placeholder="password" required>
+                            placeholder="password" required value="{{ form.password1.value|default_if_none:'' }}">
                         <button class="btn btn-outline-secondary" type="button"
                             onclick="togglePassword('password1', 'eyeIconReg1')"><i id="eyeIconReg1"
                                 class="bi bi-eye"></i></button>
@@ -44,7 +37,7 @@
                 <div class="m-4">
                     <div class="input-group">
                         <input type="password" class="form-control" name="password2" id="password2"
-                            placeholder="password confirmation" required>
+                            placeholder="password confirmation" required value="{{ form.password2.value|default_if_none:'' }}">
                         <button class="btn btn-outline-secondary" type="button"
                             onclick="togglePassword('password2', 'eyeIconReg2')"><i id="eyeIconReg2"
                                 class="bi bi-eye"></i></button>
@@ -54,7 +47,12 @@
                     {% endfor %}
                 </div>
                 <div class="m-4 captcha-container">
-                    {{ form.captcha }}
+                    <div class="d-flex flex-column align-items-center">
+                        {{ form.captcha }}
+                        <a href="#" class="captcha-refresh-btn mt-1" style="font-size: 0.8rem; color: #9a786e; text-decoration: none;">
+                            <i class="bi bi-arrow-clockwise"></i> Refresh Image
+                        </a>
+                    </div>
                     {% for error in form.captcha.errors %}
                     <div class="text-danger ms-1 mt-1"><small>{{ error }}</small></div>
                     {% endfor %}
@@ -81,5 +79,34 @@
             icon.classList.add("bi-eye");
         }
     }
+
+    // CAPTCHA refresh logic
+    document.addEventListener('DOMContentLoaded', function() {
+        const captchaImg = document.querySelector('.captcha');
+        const refreshBtn = document.querySelector('.captcha-refresh-btn');
+        
+        function refreshCaptcha(e) {
+            if (e) e.preventDefault();
+            fetch('/captcha/refresh/', {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('.captcha').src = data.image_url;
+                document.querySelector('#id_captcha_0').value = data.key;
+            })
+            .catch(error => console.error('Error refreshing captcha:', error));
+        }
+
+        if (captchaImg) {
+            captchaImg.style.cursor = 'pointer';
+            captchaImg.addEventListener('click', refreshCaptcha);
+        }
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', refreshCaptcha);
+        }
+    });
 </script>
 {% endblock %}

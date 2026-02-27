@@ -139,6 +139,19 @@ footer {
     padding: 0.375rem 0.75rem;
 }
 
+.full-page-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 100px);
+    /* Adjust for potential header/footer */
+    width: 100%;
+}
+
+.no-sidebar {
+    margin-left: 0 !important;
+}
+
 /* Captcha Styling */
 .captcha-container {
     display: flex;
