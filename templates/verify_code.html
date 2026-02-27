@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}Verify Your Account{% endblock %}
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card text-center login-box" style="max-width: 400px; width: 100%;">
+        <div class="card-body">
+            <h4 class="card-title" style="color: #9a786e; font-weight: bold;">Verify Your Account</h4>
+            <p class="card-text">Please enter the 6-digit code sent to your email.</p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="m-4">
+                    {{ form.code }}
+                    {% for error in form.code.errors %}
+                    <div class="text-danger text-start ms-1 mt-1"><small>{{ error }}</small></div>
+                    {% endfor %}
+                </div>
+                
+                <div class="m-4 captcha-container">
+                    <div class="d-flex flex-column align-items-center">
+                        {{ form.captcha }}
+                        <a href="#" class="captcha-refresh-btn mt-1" style="font-size: 0.8rem; color: #9a786e; text-decoration: none;">
+                            <i class="bi bi-arrow-clockwise"></i> Refresh Image
+                        </a>
+                    </div>
+                    {% for error in form.captcha.errors %}
+                    <div class="text-danger ms-1 mt-1"><small>{{ error }}</small></div>
+                    {% endfor %}
+                </div>
+
+                <div class="m-4">
+                    <button type="submit" class="btn mybtn w-100">Verify Account</button>
+                </div>
+            </form>
+            <hr>
+            <div class="mt-3">
+                <small class="text-muted">Didn't receive the code?</small><br>
+                <a href="{% url 'resend_activation' %}" class="mylink">Resend Verification Code</a>
+            </div>
+            <div class="mt-2">
+                <a href="{% url 'login' %}" class="mylink">Back to Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    // CAPTCHA refresh logic
+    document.addEventListener('DOMContentLoaded', function() {
+        const captchaImg = document.querySelector('.captcha');
+        const refreshBtn = document.querySelector('.captcha-refresh-btn');
+        
+        function refreshCaptcha(e) {
+            if (e) e.preventDefault();
+            fetch('/captcha/refresh/', {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('.captcha').src = data.image_url;
+                document.querySelector('#id_captcha_0').value = data.key;
+            })
+            .catch(error => console.error('Error refreshing captcha:', error));
+        }
+
+        if (captchaImg) {
+            captchaImg.style.cursor = 'pointer';
+            captchaImg.addEventListener('click', refreshCaptcha);
+        }
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', refreshCaptcha);
+        }
+        
+        // Auto-focus the code input
+        const codeInput = document.querySelector('input[name="code"]');
+        if (codeInput) codeInput.focus();
+    });
+</script>
+{% endblock %}
+{% endblock %}

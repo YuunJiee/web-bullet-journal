@@ -1,10 +1,10 @@
-Dear {{ user }},
+Dear {{ user.email }},
 
-Thank you for registering with Jotly! To complete your registration and activate your account, please click the following link:
+Thank you for registering with Jotly! To complete your registration and activate your account, please use the following 6-digit verification code:
 
-http://127.0.0.1:8000/accounts/activate/{{ activation_key }}
+Verification Code: {{ code }}
 
-This link will expire in {{ expiration_days }} days.
+This code will expire in {{ expiration_minutes }} minutes.
 
 If you did not register for Jotly, please disregard this email.
 

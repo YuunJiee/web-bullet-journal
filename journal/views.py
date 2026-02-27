@@ -4,13 +4,36 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib import messages
 from . import form
 from django.contrib.auth.models import User
-from .models import BulletJournalKey, Log
+from .models import BulletJournalKey, Log, VerificationCode
 from datetime import timedelta, date
 import datetime as python_datetime
 import calendar
 from django.contrib.auth import update_session_auth_hash
 from django.utils import timezone
-from .form import ProfileForm, CustomPasswordChangeForm
+from .form import ProfileForm, CustomPasswordChangeForm, VerificationCodeForm
+from django.conf import settings
+from django_registration.backends.activation.views import RegistrationView
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+
+class CustomRegistrationView(RegistrationView):
+    def send_activation_email(self, user):
+        # Generate 6-digit code
+        code = VerificationCode.generate_code()
+        VerificationCode.objects.create(user=user, code=code)
+        
+        # Send email with code instead of link
+        subject = "Your Jotly Verification Code"
+        message = render_to_string('django_registration/activation_email_body.txt', {
+            'user': user,
+            'code': code,
+            'expiration_minutes': 10,
+        })
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
+
+    def get_success_url(self, user=None):
+        # After registration, redirect to verify-code page
+        return '/accounts/verify/'
 
 def format_logs(logs):
     """Helper function to format log objects for templates, adding symbol and color from the related Key."""
@@ -605,3 +628,61 @@ def get_previous_next_months(year, month):
         next_year = year
 
     return (previous_year, previous_month), (next_year, next_month)
+
+def resend_activation(request):
+    if request.user.is_authenticated:
+        return redirect('index')
+    
+    if request.method == 'POST':
+        form_resend = form.ResendActivationForm(request.POST)
+        if form_resend.is_valid():
+            email = form_resend.cleaned_data['email']
+            user = User.objects.get(email__iexact=email, is_active=False)
+            
+            # Generate new 6-digit code
+            code = VerificationCode.generate_code()
+            VerificationCode.objects.create(user=user, code=code)
+            
+            # Send email
+            subject = "Your Jotly Verification Code"
+            message = render_to_string('django_registration/activation_email_body.txt', {
+                'user': user,
+                'code': code,
+                'expiration_minutes': 10,
+            })
+            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
+            
+            messages.success(request, 'A new verification code has been sent to your email.')
+            return redirect('verify_code')
+    else:
+        form_resend = form.ResendActivationForm()
+    
+    return render(request, 'resend_activation_form.html', {'form': form_resend})
+
+def verify_code(request):
+    if request.user.is_authenticated:
+        return redirect('index')
+
+    if request.method == 'POST':
+        verify_form = VerificationCodeForm(request.POST)
+        if verify_form.is_valid():
+            code_str = verify_form.cleaned_data['code']
+            # Find the most recent valid code
+            try:
+                vc = VerificationCode.objects.filter(code=code_str, is_used=False).order_by('-created_at').first()
+                if vc and vc.is_valid():
+                    user = vc.user
+                    user.is_active = True
+                    user.save()
+                    vc.is_used = True
+                    vc.save()
+                    messages.success(request, 'Account activated! You can now log in.')
+                    return redirect('login')
+                else:
+                    messages.error(request, 'Invalid or expired verification code.')
+            except Exception as e:
+                messages.error(request, 'Verification failed.')
+    else:
+        verify_form = VerificationCodeForm()
+    
+    return render(request, 'verify_code.html', {'form': verify_form})

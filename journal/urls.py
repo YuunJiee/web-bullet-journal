@@ -2,13 +2,13 @@ from django.urls import path, include
 from . import views
 from .form import CustomPasswordResetForm, CustomRegistrationForm
 from django.contrib.auth import views as auth_views
-from django_registration.backends.activation.views import RegistrationView
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('login/', views.login, name='login'),
-    path('accounts/register/', RegistrationView.as_view(form_class=CustomRegistrationForm), name='django_registration_register'),
-    path('accounts/', include('django_registration.backends.activation.urls')),
+    path('accounts/register/', views.CustomRegistrationView.as_view(form_class=CustomRegistrationForm), name='django_registration_register'),
+    path('accounts/resend-activation/', views.resend_activation, name='resend_activation'),
+    path('accounts/verify/', views.verify_code, name='verify_code'),
     path('password_reset/', auth_views.PasswordResetView.as_view(
         template_name='password_reset_form.html',
         form_class=CustomPasswordResetForm
